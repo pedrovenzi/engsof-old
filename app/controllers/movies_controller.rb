@@ -2,6 +2,7 @@
 class MoviesController < ApplicationController
   def index
     @movies = Movie.all
+    @all_ratings = Movie.all_ratings
     if params[:sort_by]
       @movies.order!(params[:sort_by])
       @title_style = 'hilite' if params[:sort_by] == 'title'
