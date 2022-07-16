@@ -2,11 +2,11 @@
 class MoviesController < ApplicationController
   def index
     @all_ratings = Movie.all_ratings
+    @ratings_filter = []
     @movies = Movie.all
     if params[:ratings]
-      ratings_filter = []
-      params[:ratings].each_key {|rating| ratings_filter.append(rating)}
-      @movies = Movie.where(rating: ratings_filter)
+      params[:ratings].each_key {|rating| @ratings_filter.append(rating)}
+      @movies = Movie.where(rating: @ratings_filter)
     end
     if params[:sort_by]
       @movies.order!(params[:sort_by])
