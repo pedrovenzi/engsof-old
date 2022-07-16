@@ -1,8 +1,13 @@
 # This file is app/controllers/movies_controller.rb
 class MoviesController < ApplicationController
   def index
-    @movies = Movie.all
     @all_ratings = Movie.all_ratings
+    @movies = Movie.all
+    if params[:ratings]
+      ratings_filter = []
+      params[:ratings].each_key {|rating| ratings_filter.append(rating)}
+      @movies = Movie.where(rating: ratings_filter)
+    end
     if params[:sort_by]
       @movies.order!(params[:sort_by])
       @title_style = 'hilite' if params[:sort_by] == 'title'
@@ -27,7 +32,7 @@ class MoviesController < ApplicationController
   end
 
   def movie_params
-    params.require(:movie).permit(:title,:rating,:description,:release_date,:sort_by)
+    params.require(:movie).permit(:title,:rating,:description,:release_date,:sort_by,:ratings)
   end
 
   def edit
